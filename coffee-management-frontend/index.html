@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Система управления кафе</title>
+    <style>
+      .loading-fallback {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #f9fafb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: system-ui, sans-serif;
+        z-index: 9999;
+      }
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid #e5e7eb;
+        border-top: 4px solid #3b82f6;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      .error-fallback {
+        text-align: center;
+        color: #6b7280;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <!-- Fallback loading screen -->
+      <div class="loading-fallback" id="loading-fallback">
+        <div class="error-fallback">
+          <div class="spinner"></div>
+          <p style="margin-top: 16px;">Загрузка системы...</p>
+          <p style="margin-top: 8px; font-size: 14px;">Если загрузка занимает слишком много времени, <a href="javascript:window.location.reload()" style="color: #3b82f6;">обновите страницу</a></p>
+        </div>
+      </div>
+    </div>
+    
+    <script>
+      // Убираем fallback когда Vue загрузится
+      window.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+          const fallback = document.getElementById('loading-fallback');
+          if (fallback && fallback.parentNode) {
+            fallback.style.display = 'none';
+          }
+        }, 2000);
+      });
+      
+      // Показываем ошибку если что-то пошло не так
+      window.addEventListener('error', (e) => {
+        console.error('Critical error:', e.error);
+        const fallback = document.getElementById('loading-fallback');
+        if (fallback) {
+          fallback.innerHTML = `
+            <div class="error-fallback">
+              <p style="color: #dc2626; font-size: 18px; margin-bottom: 16px;">Ошибка загрузки</p>
+              <p style="margin-bottom: 16px;">Произошла ошибка при загрузке приложения</p>
+              <button onclick="window.location.reload()" style="background: #3b82f6; color: white; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer;">
+                Обновить страницу
+              </button>
+            </div>
+          `;
+        }
+      });
+    </script>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
