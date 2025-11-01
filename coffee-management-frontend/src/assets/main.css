@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 
-@config "./tailwind.config.js";
+/* @config "./tailwind.config.js"; */
 
 /* Или можно настроить прямо в CSS */
 @theme {
